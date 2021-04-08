@@ -1,21 +1,23 @@
 const express = require('express');
-var cors = require('cors');
+const cors = require('cors');
+
 const { dbConnection } = require('../database/config.db');
 
 class Server {
-	/* ================== CLASS CONSTRUCTOR ======================== */
 	constructor() {
-		this.app = express(); //Inicia Express
-		this.port = process.env.PORT; // Genera el puerto
-		this.usuariosPath = '/api/usuarios';
+		this.app = express();
+		this.port = process.env.PORT;
 
-		//  Connecting DB
+		this.usuariosPath = '/api/usuarios';
+		this.authPath = '/api/auth';
+
+		// Conectar a base de datos
 		this.conectarDB();
 
 		// Middlewares
 		this.middlewares();
 
-		//Rutas de mi aplicacion
+		// Rutas de mi aplicación
 		this.routes();
 	}
 
@@ -23,7 +25,6 @@ class Server {
 		await dbConnection();
 	}
 
-	/* ================== MIDDLEWARES ======================== */
 	middlewares() {
 		// CORS
 		this.app.use(cors());
@@ -31,19 +32,18 @@ class Server {
 		// Lectura y parseo del body
 		this.app.use(express.json());
 
-		// Directorio Publico
+		// Directorio Público
 		this.app.use(express.static('public'));
 	}
 
-	/* ================== ROUTES METHOD  ======================== */
 	routes() {
+		this.app.use(this.authPath, require('../routes/auth.routes'));
 		this.app.use(this.usuariosPath, require('../routes/user.routes'));
 	}
 
-	/* ================== LISTEN METHOD ======================== */
 	listen() {
 		this.app.listen(this.port, () => {
-			console.log(`Server running on port: ${this.port}`);
+			console.log('Servidor corriendo en puerto', this.port);
 		});
 	}
 }

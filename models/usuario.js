@@ -7,11 +7,12 @@ const UsuarioSchema = Schema({
 	},
 	correo: {
 		type: String,
-		required: [ true, 'El correo es obligatorio' ]
+		required: [ true, 'El correo es obligatorio' ],
+		unique: true
 	},
 	password: {
 		type: String,
-		required: [ true, 'El password es obligatorio' ]
+		required: [ true, 'La contraseña es obligatoria' ]
 	},
 	img: {
 		type: String
@@ -32,20 +33,9 @@ const UsuarioSchema = Schema({
 });
 
 UsuarioSchema.methods.toJSON = function() {
-	const { __v, password, ...usuario } = this.toObject();
+	const { __v, password, _id, ...usuario } = this.toObject();
+	usuario.uid = _id;
 	return usuario;
 };
 
 module.exports = model('Usuario', UsuarioSchema);
-
-/*
-{
-    nombre: '',
-    correo: 'asdasd@gmail.com',
-    password: 'asddasdsa',
-    img: '12313123214',
-    rol: 'asdasdsaasw21314d',
-    estado: true/false (Activo/Inactivo - eliminado)
-    google: true/false (Creado por Google)
-} 
- */
