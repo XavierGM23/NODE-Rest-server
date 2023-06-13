@@ -17,3 +17,6 @@ Remember to execute ```npm install``` for adding node modules
 - NodeJS
 - JS(>ES6)
 
+## Additional notes 
+
+
