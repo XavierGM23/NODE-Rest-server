@@ -17,9 +17,3 @@ Remember to execute ```npm install``` for adding node modules
 - NodeJS
 - JS(>ES6)
 
-## Notes 
-If you want to use yarn: 
-```
-yarn install
-```
-
